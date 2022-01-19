@@ -2,42 +2,47 @@ var express = require("express");
 var router = express.Router();
 
 // Load User model
-const User = require("../models/Users");
+const Vendor = require("../models/Vendor");
+
+// URL is of this format: ../vendor/..
 
 // GET request 
-// Getting all the users
+// Getting all the vendors
 router.get("/", function(req, res) {
-    User.find(function(err, users) {
+    Vendor.find(function(err, vendors) {
 		if (err) {
 			console.log(err);
 		} else {
-			res.json(users);
+			res.json(vendors);
 		}
 	})
 });
 
-// NOTE: Below functions are just sample to show you API endpoints working, for the assignment you may need to edit them
 
 // POST request 
-// Add a user to db
+// Add a vendor to the database
 router.post("/register", (req, res) => {
-    const newUser = new User({
-        name: req.body.name,
-        email: req.body.email,
-        date: req.body.date
-    });
+
+    const manager_name = req.body.manager_name;
+    const shop_name = req.body.shop_name;
+    const email = req.body.email;
+    const contact_num = req.body.contact_num;
+    const open_time = req.body.open_time;
+    const close_time = req.body.close_time;
+
+    const newUser = new Vendor({manager_name, shop_name, email, contact_num, open_time, close_time});
 
     newUser.save()
-        .then(user => {
-            res.status(200).json(user);
+        .then(vendor => {
+            res.status(200).json(vendor);
         })
         .catch(err => {
-            res.status(400).send(err);
+            res.status(400).send("Error: " + err);
         });
 });
 
 // POST request 
-// Login
+// Vendor Login
 router.post("/login", (req, res) => {
 	const email = req.body.email;
 	// Find user by email
