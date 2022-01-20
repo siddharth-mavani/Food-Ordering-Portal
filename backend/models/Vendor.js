@@ -21,6 +21,12 @@ const UserSchema = new Schema({
 		unique: true,
 		trim: true,
 	},
+	password: {
+		type: String,
+		required: true,
+		unique: false,
+		trim: true,
+	},
 	contact_num:{
 		type: Number,
 		required: true,
@@ -43,4 +49,4 @@ const UserSchema = new Schema({
 	timestamps: true,
 });
 
-module.exports = User = mongoose.model("Vendor", UserSchema);
+module.exports = Vendor = mongoose.model("Vendor", UserSchema);

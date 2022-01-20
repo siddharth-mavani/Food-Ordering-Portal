@@ -24,10 +24,11 @@ router.post("/register", (req, res) => {
 
     const name = req.body.name;
     const email = req.body.email;
+    const password = req.body.password;
     const contact_num = req.body.contact_num;
     const age = req.body.age;
 
-    const newUser = new Buyer({name, email, contact_num, age});
+    const newUser = new Buyer({name, email, password, contact_num, age});
 
     newUser.save()
         .then(buyer => {
@@ -42,18 +43,25 @@ router.post("/register", (req, res) => {
 // Buyer Login
 router.post("/login", (req, res) => {
 	const email = req.body.email;
+    const password = req.body.password;
 
 	// Find user by email
-	User.findOne({ email }).then(user => {
+	Buyer.findOne({ email }).then(buyer => {
 		// Check if user email exists
-		if (!user) {
+		if (!buyer) {
 			return res.status(404).json({
 				error: "Email not found",
 			});
         }
         else{
-            res.send("Email Found");
-            return user;
+            if(password.localeCompare(buyer.password) == 0){
+                res.send("Buyer Found");
+            }
+            else{
+                return res.status(404).json({
+                    error: buyer.password + " ;" + password,
+                });
+            }
         }
 	});
 });

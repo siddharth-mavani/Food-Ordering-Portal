@@ -26,11 +26,12 @@ router.post("/register", (req, res) => {
     const manager_name = req.body.manager_name;
     const shop_name = req.body.shop_name;
     const email = req.body.email;
+    const password = req.body.password;
     const contact_num = req.body.contact_num;
     const open_time = req.body.open_time;
     const close_time = req.body.close_time;
 
-    const newUser = new Vendor({manager_name, shop_name, email, contact_num, open_time, close_time});
+    const newUser = new Vendor({manager_name, shop_name, email, password, contact_num, open_time, close_time});
 
     newUser.save()
         .then(vendor => {
@@ -45,17 +46,25 @@ router.post("/register", (req, res) => {
 // Vendor Login
 router.post("/login", (req, res) => {
 	const email = req.body.email;
-	// Find user by email
-	User.findOne({ email }).then(user => {
+    const password = req.body.password;
+
+	// Find Vendor by email
+	Vendor.findOne({ email }).then(vendor => {
 		// Check if user email exists
-		if (!user) {
+		if (!vendor) {
 			return res.status(404).json({
 				error: "Email not found",
 			});
         }
         else{
-            res.send("Email Found");
-            return user;
+            if(password.localeCompare(vendor.password) == 0){
+                res.send("Vendor Found");
+            }
+            else{
+                return res.status(404).json({
+                    error: vendor.password + " ;" + password,
+                });
+            }
         }
 	});
 });
