@@ -1,71 +1,75 @@
 import { useState } from "react";
-import axios from "axios";
 import Grid from "@mui/material/Grid";
-import TextField from "@mui/material/TextField";
-import Button from "@mui/material/Button";
+import Link from '@mui/material/Link';
+import Typography from '@mui/material/Typography';
+import Container from '@mui/material/Container';
+import MenuItem from "@material-ui/core/MenuItem";
+import Select from '@mui/material/Select';
+import InputLabel from '@mui/material/InputLabel';
+import FormControl from '@mui/material/FormControl';
+import BuyerRegister from "./buyer";
+import VendorRegister from "./vendor";
 
 const Register = (props) => {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [date, setDate] = useState(null);
 
-  const onChangeUsername = (event) => {
-    setName(event.target.value);
-  };
+  const [user_type, setType] = useState("");
 
-  const onChangeEmail = (event) => {
-    setEmail(event.target.value);
-  };
-
-  const resetInputs = () => {
-    setName("");
-    setEmail("");
-    setDate(null);
-  };
-
-  const onSubmit = (event) => {
-    event.preventDefault();
-
-    const newUser = {
-      name: name,
-      email: email,
-      date: Date.now(),
-    };
-
-    axios
-      .post("http://localhost:4000/user/register", newUser)
-      .then((response) => {
-        alert("Created\t" + response.data.name);
-        console.log(response.data);
-      });
-
-    resetInputs();
+  const onChangeuser = (event) => {
+    setType(event.target.value);
   };
 
   return (
-    <Grid container align={"center"} spacing={2}>
-      <Grid item xs={12}>
-        <TextField
-          label="Name"
-          variant="outlined"
-          value={name}
-          onChange={onChangeUsername}
-        />
-      </Grid>
-      <Grid item xs={12}>
-        <TextField
-          label="Email"
-          variant="outlined"
-          value={email}
-          onChange={onChangeEmail}
-        />
-      </Grid>
-      <Grid item xs={12}>
-        <Button variant="contained" onClick={onSubmit}>
-          Register
-        </Button>
-      </Grid>
-    </Grid>
+
+      <Container component="main" maxWidth="xs" align={"center"} sx={{ mt: 10 }}>
+
+          <Typography component="h1" variant="h5">
+            Register
+          </Typography>
+                      
+            <Grid align={"center"}>
+
+              <Grid item xs={25}>
+
+                <FormControl sx={{ m: 1, minWidth: 350 }}>
+                  
+                  <InputLabel>User Type</InputLabel>
+
+                  <Select
+                    value={user_type}
+                    onChange={onChangeuser}
+                    autosize={true}
+                    label="User Type">
+
+                    <MenuItem value={"Buyer"}>Buyer</MenuItem>
+                    <MenuItem value={"Vendor"}>Vendor</MenuItem>
+
+                  </Select>
+
+                </FormControl>
+
+              </Grid>
+            
+            {user_type === "Buyer" && (
+              <Grid id="BuyerRegister" item xs={25}>
+                <BuyerRegister />
+              </Grid>
+            )}
+
+            {user_type === "Vendor" && (
+              <Grid id="VendorRegister" item xs={25}>
+                <VendorRegister />
+              </Grid>
+            )}
+          </Grid>
+          
+          
+          <Link href="#" variant="body2" sx={{ mt: 10 }}>
+            Already have an account ? Sign in
+          </Link>
+          
+          
+
+      </Container>
   );
 };
 
