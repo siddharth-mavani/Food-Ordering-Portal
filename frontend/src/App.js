@@ -2,11 +2,11 @@ import { BrowserRouter, Routes, Route, Outlet } from "react-router-dom";
 import "./App.css";
 
 import Home from "./components/common/Home";
-import Register from "./components/common/Registration/Register";
 import Navbar from "./components/templates/Navbar";
 import BuyerProfile from "./components/UserProfiles/BuyerProfile";
 import VendorProfile from "./components/UserProfiles/VendorProfile";
-import Login from "./components/common/Login/Login";
+import Login from "./components/Login/Login";
+import Register from "./components/Registration/Register";
 
 const Layout = () => {
   return (
