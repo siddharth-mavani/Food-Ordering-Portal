@@ -33,6 +33,12 @@ const UserSchema = new Schema({
 		unique: false,
 		trim: true,
 	},
+	batch:{
+		type: String,
+		required: true,
+		unique: false,
+		trim: true,
+	},
 },{
 	timestamps: true,
 });

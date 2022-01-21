@@ -1,10 +1,15 @@
 import { useState } from "react";
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import MenuItem from "@material-ui/core/MenuItem";
 import axios from "axios";
 import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
 import Container from "@mui/material/Container";
 import Button from "@mui/material/Button";
-import { createTheme, ThemeProvider } from '@mui/material/styles';
+import Select from '@mui/material/Select';
+import InputLabel from '@mui/material/InputLabel';
+import FormControl from '@mui/material/FormControl';
+
 
 const theme = createTheme({
     palette: {
@@ -21,6 +26,7 @@ const BuyerRegister = (props) => {
   const [password, setPassword] = useState("");
   const [contact_num, setContact] = useState("");
   const [age, setAge] = useState("");
+  const [batch, setBatch] = useState("");
 
 
   const onChangeBuyerName = (event) => {
@@ -43,12 +49,18 @@ const BuyerRegister = (props) => {
     setAge(event.target.value);
   };
 
+  const onChangeBatch = (event) => {
+    setBatch(event.target.value);
+  };
+
+
   const resetInputs = () => {
     setBuyerName("");
     setEmail("");
     setPassword("");
     setContact("");
     setAge("");
+    setBatch("");
   };
 
   const onSubmit = (event) => {
@@ -61,6 +73,7 @@ const BuyerRegister = (props) => {
       password: password,
       contact_num: contact_num,
       age: age,
+      batch: batch,
     };
 
     axios
@@ -141,6 +154,29 @@ const BuyerRegister = (props) => {
                   onChange={onChangeAge}
                 />
               </Grid>
+
+
+              <FormControl sx={{ m: 1, minWidth: 350 }}>
+                  
+                <InputLabel>Batch</InputLabel>
+
+                <Select
+                  value={batch}
+                  onChange={onChangeBatch}
+                  autosize={true}
+                  label="Batch">
+
+                  <MenuItem value={"UG1"}>UG1</MenuItem>
+                  <MenuItem value={"UG2"}>UG2</MenuItem>
+                  <MenuItem value={"UG3"}>UG3</MenuItem>
+                  <MenuItem value={"UG4"}>UG4</MenuItem>
+                  <MenuItem value={"UG5"}>UG5</MenuItem>
+
+                </Select>
+
+              </FormControl>
+
+
             </Grid>
 
             <Grid sx={{ mt: 2, mb: 2 }}>

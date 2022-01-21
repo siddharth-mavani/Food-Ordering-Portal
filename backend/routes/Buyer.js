@@ -27,8 +27,9 @@ router.post("/register", (req, res) => {
     const password = req.body.password;
     const contact_num = req.body.contact_num;
     const age = req.body.age;
+    const batch = req.body.batch;
 
-    const newUser = new Buyer({name, email, password, contact_num, age});
+    const newUser = new Buyer({name, email, password, contact_num, age, batch});
 
     newUser.save()
         .then(buyer => {

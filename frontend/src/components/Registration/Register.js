@@ -49,18 +49,18 @@ const Register = (props) => {
 
               </Grid>
             
-            {user_type === "Buyer" && (
-              <Grid id="BuyerRegister" item xs={25}>
-                <BuyerRegister />
-              </Grid>
-            )}
+              {user_type === "Buyer" && (
+                <Grid id="BuyerRegister" item xs={25}>
+                  <BuyerRegister />
+                </Grid>
+              )}
 
-            {user_type === "Vendor" && (
-              <Grid id="VendorRegister" item xs={25}>
-                <VendorRegister />
-              </Grid>
-            )}
-          </Grid>
+              {user_type === "Vendor" && (
+                <Grid id="VendorRegister" item xs={25}>
+                  <VendorRegister />
+                </Grid>
+              )}
+            </Grid>
           
           
           <Link href="/login" variant="body2" sx={{ mt: 10 }}>
