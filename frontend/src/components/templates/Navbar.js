@@ -13,7 +13,6 @@ import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 
-const pages = ['Register', 'Login', 'Blog'];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
 const ResponsiveAppBar = () => {
@@ -79,13 +78,13 @@ const ResponsiveAppBar = () => {
                 display: { xs: 'block', md: 'none' },
               }}
             >
-              <MenuItem onClick={() => navigate("/")}>
+              <MenuItem onClick={() => {navigate("/"); handleCloseNavMenu()}}>
                 <Typography textAlign="center">Home</Typography>
               </MenuItem>
-              <MenuItem onClick={() => navigate("/register")}>
+              <MenuItem onClick={() => {navigate("/register"); handleCloseNavMenu()}}>
                 <Typography textAlign="center">Register</Typography>
               </MenuItem>
-              <MenuItem onClick={() => navigate("/register")}>
+              <MenuItem onClick={() => {navigate("/login"); handleCloseNavMenu()}}>
                 <Typography textAlign="center">Login</Typography>
               </MenuItem>
               
@@ -102,15 +101,15 @@ const ResponsiveAppBar = () => {
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
               
-              <Button onClick={() => navigate("/")} sx={{ my: 2, color: 'white', display: 'block' }}>
+              <Button onClick={() => {navigate("/"); handleCloseNavMenu()}} sx={{ my: 2, color: 'white', display: 'block' }}>
                 Home
               </Button>
 
-              <Button onClick={() => navigate("/register")} sx={{ my: 2, color: 'white', display: 'block' }}>
+              <Button onClick={() => {navigate("/register"); handleCloseNavMenu()}} sx={{ my: 2, color: 'white', display: 'block' }}>
                 Register
               </Button>
 
-              <Button onClick={() => navigate("/register")} sx={{ my: 2, color: 'white', display: 'block' }}>
+              <Button onClick={() => {navigate("/login"); handleCloseNavMenu()}} sx={{ my: 2, color: 'white', display: 'block' }}>
                 Login
               </Button>
             
@@ -128,12 +127,12 @@ const ResponsiveAppBar = () => {
               anchorEl={anchorElUser}
               anchorOrigin={{
                 vertical: 'top',
-                horizontal: 'right',
+                // horizontal: 'right',
               }}
               keepMounted
               transformOrigin={{
                 vertical: 'top',
-                horizontal: 'right',
+                // horizontal: 'right',
               }}
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}

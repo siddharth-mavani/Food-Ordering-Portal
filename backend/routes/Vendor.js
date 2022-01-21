@@ -58,7 +58,7 @@ router.post("/login", (req, res) => {
         }
         else{
             if(password.localeCompare(vendor.password) == 0){
-                res.send("Vendor Found");
+                res.send({email});
             }
             else{
                 return res.status(404).json({
