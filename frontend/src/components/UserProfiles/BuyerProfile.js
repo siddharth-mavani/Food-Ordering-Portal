@@ -6,6 +6,7 @@ import TextField from "@mui/material/TextField";
 import Container from "@mui/material/Container";
 import Button from "@mui/material/Button";
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { dividerClasses } from "@mui/material";
 
 const theme = createTheme({
     palette: {
@@ -19,29 +20,15 @@ const BuyerProfile = (props) => {
 
   const navigate = useNavigate();
 
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-
-  const onChangeEmail = (event) => {
-    setEmail(event.target.value);
-  };
-
-  const onChangePassword = (event) => {
-    setPassword(event.target.value);
-  };
-
-  const resetInputs = () => {
-    setEmail("");
-    setPassword("");
-  };
+  const email = localStorage.getItem("Email");
+  // alert(email);
 
   const onSubmit = (event) => {
 
     event.preventDefault();
 
     const loginBuyer = {
-      email: email,
-      password: password,
+      
     };
 
     axios
@@ -52,53 +39,14 @@ const BuyerProfile = (props) => {
         navigate("/register");
       });
 
-    resetInputs();
   };
 
 
   return (  
-    <ThemeProvider theme={theme}>  
-        <Container>
-            <Grid container spacing={1} align={"center"}>
-
-              <Grid item xs={12}>
-                <TextField
-                  autoFocus
-                  required
-                  fullWidth
-                  id="Email"
-                  label="Buyer"
-                  name="Email"
-                  autoComplete="Email"
-                  onChange={onChangeEmail}
-                />
-              </Grid>
-              
-              <Grid item xs={12}>
-                <TextField
-                  autoFocus
-                  required
-                  fullWidth
-                  id="Password"
-                  label="Password"
-                  name="Password"
-                  autoComplete="Password"
-                  type={"password"}
-                  onChange={onChangePassword}
-                />
-              </Grid>
-
-            </Grid>
-
-            <Grid sx={{ mt: 2, mb: 2 }}>
-                <Button fullWidth variant="contained" color="primary" onClick={onSubmit}>
-                    Sign In
-                </Button>
-            </Grid>
-
-      </Container>
-
-    </ThemeProvider>  
+    <Grid>
+      {email}
+    </Grid>
+    
   );
 };
 

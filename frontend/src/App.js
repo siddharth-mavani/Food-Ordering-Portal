@@ -2,7 +2,7 @@ import { BrowserRouter, Routes, Route, Outlet } from "react-router-dom";
 import "./App.css";
 
 import Home from "./components/common/Home";
-import Navbar from "./components/templates/Navbar";
+import Navbar from "./components/templates/Navbar/Navbar";
 import BuyerProfile from "./components/UserProfiles/BuyerProfile";
 import VendorProfile from "./components/UserProfiles/VendorProfile";
 import Login from "./components/Login/Login";
@@ -25,10 +25,10 @@ function App() {
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route path="/" element={<Home />} />
-          <Route path="register" element={<Register />} />
-          <Route path="login" element={<Login />} />
-          <Route path="buyerprofile" element={<BuyerProfile />} />
-          <Route path="vendorprofile" element={<VendorProfile />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/buyerprofile" element={<BuyerProfile />} />
+          <Route path="/vendorprofile" element={<VendorProfile />} />
         </Route>
       </Routes>
     </BrowserRouter>

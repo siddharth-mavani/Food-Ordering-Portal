@@ -49,8 +49,14 @@ const BuyerLogin = () => {
       .then((response) => {
         alert("Login Successful");
         console.log(response.data);
+        localStorage.setItem("BuyerEmail", email);
         navigate("/buyerprofile");
+        window.location.reload();
+      })
+      .catch((response) => {
+        alert("incorrect password");
       });
+      
 
     resetInputs();
   };
@@ -97,7 +103,6 @@ const BuyerLogin = () => {
             </Grid>
 
       </Container>
-
     </ThemeProvider>  
   );
 };

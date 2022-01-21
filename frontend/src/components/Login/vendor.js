@@ -49,7 +49,12 @@ const VendorLogin = (props) => {
       .then((response) => {
         alert("Login Successful");
         console.log(response.data);
+        localStorage.setItem("VendorEmail", email);
         navigate("/vendorprofile");
+        window.location.reload();
+      })
+      .catch((response) => {
+        alert("incorrect password");
       });
 
     resetInputs();
