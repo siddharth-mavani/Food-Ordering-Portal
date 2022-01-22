@@ -3,8 +3,8 @@ import "./App.css";
 
 import Home from "./components/common/Home";
 import Navbar from "./components/templates/Navbar/Navbar";
-import BuyerProfile from "./components/UserProfiles/BuyerProfile";
-import VendorProfile from "./components/UserProfiles/VendorProfile";
+import BuyerProfile from "./components/UserProfiles/Buyer/BuyerProfile";
+import VendorProfile from "./components/UserProfiles/Vendor/VendorProfile";
 import Login from "./components/Login/Login";
 import Register from "./components/Registration/Register";
 

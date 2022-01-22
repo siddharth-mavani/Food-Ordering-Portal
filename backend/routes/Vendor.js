@@ -69,5 +69,33 @@ router.post("/login", (req, res) => {
 	});
 });
 
+router.post("/getvendor", (req, res) => {
+    Vendor.findOne({'email': req.body.email}, function(err, vendor) {
+		if (err) {
+			console.log(err);
+		} else {
+			res.json(vendor);
+		}
+	})
+});
+
+router.post("/updatevendor", (req, res) => {
+    Vendor.findOne({email: req.body.email}) 
+		.then(vendor => {
+            vendor.manager_name = req.body.manager_name;
+            vendor.shop_name = req.body.shop_name;
+            vendor.password = req.body.password;
+            vendor.contact_num = req.body.contact_num;
+            vendor.open_time = req.body.open_time;
+            vendor.close_time = req.body.close_time;
+
+            vendor.save()
+            .then(() => res.json("Vendor Updated"))
+            .catch(err => res.status(400).json(err))
+        })
+    .catch(err => res.status(400).json(err))
+});
+
+
 module.exports = router;
 

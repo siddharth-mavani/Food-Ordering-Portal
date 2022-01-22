@@ -64,7 +64,7 @@ const BuyerLogin = () => {
 
   return (  
     <ThemeProvider theme={theme}>  
-        <Container>
+        <Container component="main" maxWidth="xs" align={"center"} >
             <Grid container spacing={1} align={"center"}>
 
               <Grid item xs={12}>

@@ -18,6 +18,8 @@ router.get("/", function(req, res) {
 	})
 });
 
+
+
 // POST request 
 // Add a buyer to the database
 router.post("/register", (req, res) => {
@@ -66,6 +68,33 @@ router.post("/login", (req, res) => {
         }
 	});
 });
+
+router.post("/getbuyer", (req, res) => {
+    Buyer.findOne({'email': req.body.email}, function(err, buyer) {
+		if (err) {
+			console.log(err);
+		} else {
+			res.json(buyer);
+		}
+	})
+});
+
+router.post("/updatebuyer", (req, res) => {
+    Buyer.findOne({email: req.body.email}) 
+		.then(buyer => {
+            buyer.name = req.body.name;
+            buyer.password = req.body.password;
+            buyer.contact_num = req.body.contact_num;
+            buyer.age = req.body.age;
+            buyer.batch = req.body.batch;
+
+            buyer.save()
+            .then(() => res.json("Buyer Updated"))
+            .catch(err => res.status(400).json(err))
+        })
+    .catch(err => res.status(400).json(err))
+});
+
 
 module.exports = router;
 
