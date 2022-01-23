@@ -39,6 +39,12 @@ const UserSchema = new Schema({
 		unique: false,
 		trim: true,
 	},
+	money:{
+		type: Number,
+		required: true,
+		unique: false,
+		trim: false,
+	},
 },{
 	timestamps: true,
 });

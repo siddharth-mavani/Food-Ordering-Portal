@@ -95,6 +95,18 @@ router.post("/updatebuyer", (req, res) => {
     .catch(err => res.status(400).json(err))
 });
 
+router.post("/updatebuyermoney", (req, res) => {
+    Buyer.findOne({email: req.body.email}) 
+		.then(buyer => {
+            buyer.money = req.body.money;
+            
+            buyer.save()
+            .then(() => res.json("Amount Updated"))
+            .catch(err => res.status(400).json(err))
+        })
+    .catch(err => res.status(400).json(err))
+});
+
 
 module.exports = router;
 
