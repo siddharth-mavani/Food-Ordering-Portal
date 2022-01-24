@@ -50,7 +50,7 @@ const BuyerLogin = () => {
         alert("Login Successful");
         console.log(response.data);
         localStorage.setItem("BuyerEmail", email);
-        navigate("/buyerprofile");
+        navigate("/buyerdashboard");
         window.location.reload();
       })
       .catch((response) => {
