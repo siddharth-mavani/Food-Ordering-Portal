@@ -16,7 +16,6 @@ import Autocomplete from "@mui/material/Autocomplete";
 import IconButton from "@mui/material/IconButton";
 import InputAdornment from "@mui/material/InputAdornment";
 import Fuse from 'fuse.js';
-import Chip from '@mui/material/Chip';
 
 import SearchIcon from "@mui/icons-material/Search";
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
@@ -29,7 +28,8 @@ const BuyerDashboard = (props) => {
   const [food_items, setFoodItems] = useState([]);
   const [filtered_food_items, setFilteredFoodItems] = useState([]);
   const [sortedfood_items, setSortedFoodItems] = useState([]);
-  const [sortFoodName, setSortFoodName] = useState(true);
+  const [sortPrice, setsortPrice] = useState(true);
+  const [sortRating, setsortRating] = useState(false);
   const [ShopNames, setShopNames] = useState([]);
   const [Tags, setTags] = useState([]);
   const [balance, setBalance] = useState(0);
@@ -61,6 +61,7 @@ const BuyerDashboard = (props) => {
         })
         
         setTags(tags);
+        console.log(filtered_food_items);
 
         const shops = [];
         response.data.map((food_item) =>{
@@ -187,20 +188,6 @@ const BuyerDashboard = (props) => {
     setFilterShopName(value);
   }
 
-  const sortChange = (event) => {
-    let usersTemp = food_items;
-    const flag = sortFoodName;
-    usersTemp.sort((a, b) => {
-      if (a.date != undefined && b.date != undefined) {
-        return (1 - flag * 2) * (new Date(a.date) - new Date(b.date));
-      } else {
-        return 1;
-      }
-    });
-    setFoodItems(usersTemp);
-    setSortFoodName(!sortFoodName);
-  };
-
   const onChangeDisplayTag = (value) => {
 
     setDisplayTag(value);    
@@ -229,6 +216,41 @@ const BuyerDashboard = (props) => {
 
   const GoToWallet = () => {
     navigate("/wallet");
+  }
+
+  const sortChangePrice = (event) => {
+
+    let usersTemp = filtered_food_items;
+    const flag = sortPrice;
+    usersTemp.sort((a, b) => {
+      if (a.price != undefined && b.price != undefined) {
+        return (1 - flag * 2) * (a.price - b.price);
+      } else {
+        return 1;
+      }
+    });
+    
+    setFoodItems(usersTemp);
+    setsortPrice(!sortPrice);
+
+  };
+
+  // Sort based on rating
+  const sortChangeRating = (event) => {
+
+    let usersTemp = filtered_food_items;
+    const flag = sortRating;
+    usersTemp.sort((a, b) => {
+      if (a.rating != undefined && b.rating != undefined) {
+        return (1 - flag * 2) * (a.rating - b.rating);
+      } else {
+        return 1;
+      }
+    });
+    
+    setFoodItems(usersTemp);
+    setsortRating(!sortRating);
+
   }
 
   return (
@@ -380,14 +402,19 @@ const BuyerDashboard = (props) => {
                   <TableCell>Item Name</TableCell>
                   <TableCell>
                     {"Price"}
-                    <Button onClick={sortChange}>
-                      {sortFoodName ? <ArrowDownwardIcon /> : <ArrowUpwardIcon />}
+                    <Button onClick={sortChangePrice}>
+                      {sortPrice ? <ArrowDownwardIcon /> : <ArrowUpwardIcon />}
                     </Button>
                   </TableCell>
                   <TableCell>Item Type</TableCell>
                   <TableCell>Addons</TableCell>
                   <TableCell>Tags</TableCell>
-                  <TableCell>Rating</TableCell>
+                  <TableCell>
+                    {"Rating"}
+                    <Button onClick={sortChangeRating}>
+                      {sortRating ? <ArrowDownwardIcon /> : <ArrowUpwardIcon />}
+                    </Button>
+                  </TableCell>
                   <TableCell> </TableCell>
                   <TableCell> </TableCell>
                 </TableRow>
@@ -420,13 +447,13 @@ const BuyerDashboard = (props) => {
                     </TableCell>                
                     <TableCell>{food_item.rating}</TableCell>
                     <TableCell>
-                      <Button onClick={sortChange}>
-                        {sortFoodName ? <ArrowDownwardIcon /> : <ArrowUpwardIcon />}
+                      <Button onClick={sortChangePrice}>
+                        {sortPrice ? <ArrowDownwardIcon /> : <ArrowUpwardIcon />}
                       </Button> 
                     </TableCell>
                     <TableCell> 
-                      <Button onClick={sortChange}>
-                        {sortFoodName ? <ArrowDownwardIcon /> : <ArrowUpwardIcon />}
+                      <Button onClick={sortChangeRating}>
+                        {sortPrice ? <ArrowDownwardIcon /> : <ArrowUpwardIcon />}
                       </Button>
                     </TableCell>
                   </TableRow>
