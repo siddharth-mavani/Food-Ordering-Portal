@@ -9,6 +9,7 @@ const DB_NAME = "Food-Delivery-WebApp";
 // routes
 var BuyerRouter = require("./routes/Buyer");
 var VendorRouter = require("./routes/Vendor");
+var FoodRouter = require("./routes/Food");
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -25,6 +26,7 @@ connection.once('open', function() {
 // setup API endpoints
 app.use("/buyer", BuyerRouter);
 app.use("/vendor", VendorRouter);
+app.use("/food", FoodRouter);
 
 app.listen(PORT, function() {
     console.log("Server is running on Port: " + PORT);

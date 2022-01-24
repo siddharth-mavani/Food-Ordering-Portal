@@ -30,8 +30,9 @@ router.post("/register", (req, res) => {
     const contact_num = req.body.contact_num;
     const age = req.body.age;
     const batch = req.body.batch;
+    const money = 0;
 
-    const newUser = new Buyer({name, email, password, contact_num, age, batch});
+    const newUser = new Buyer({name, email, password, contact_num, age, batch, money});
 
     newUser.save()
         .then(buyer => {
@@ -69,6 +70,8 @@ router.post("/login", (req, res) => {
 	});
 });
 
+// POST request
+// Get Buyer from email
 router.post("/getbuyer", (req, res) => {
     Buyer.findOne({'email': req.body.email}, function(err, buyer) {
 		if (err) {
@@ -79,6 +82,8 @@ router.post("/getbuyer", (req, res) => {
 	})
 });
 
+// POST request
+// Update buyer info
 router.post("/updatebuyer", (req, res) => {
     Buyer.findOne({email: req.body.email}) 
 		.then(buyer => {
@@ -95,6 +100,8 @@ router.post("/updatebuyer", (req, res) => {
     .catch(err => res.status(400).json(err))
 });
 
+// Post request
+// Update buyer wallet 
 router.post("/updatebuyermoney", (req, res) => {
     Buyer.findOne({email: req.body.email}) 
 		.then(buyer => {

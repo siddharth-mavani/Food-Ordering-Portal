@@ -69,6 +69,8 @@ router.post("/login", (req, res) => {
 	});
 });
 
+// POST request
+// Get Vendor from email
 router.post("/getvendor", (req, res) => {
     Vendor.findOne({'email': req.body.email}, function(err, vendor) {
 		if (err) {
@@ -79,6 +81,8 @@ router.post("/getvendor", (req, res) => {
 	})
 });
 
+// POST request
+// Update Vendor info
 router.post("/updatevendor", (req, res) => {
     Vendor.findOne({email: req.body.email}) 
 		.then(vendor => {
