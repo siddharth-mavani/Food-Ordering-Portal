@@ -26,13 +26,15 @@ router.post("/add", (req, res) => {
     const shop_name = req.body.shop_name;
     const vendor_email = req.body.vendor_email;
     const item_name = req.body.item_name;
+    const item_type = req.body.item_type;
     const price = req.body.price;
     const rating = 0;
     const num_ratings = 0;
     const addons = req.body.addons;
+    const addon_price = req.body.addon_price;
     const tags = req.body.tags;
 
-    const newUser = new Food({shop_name, vendor_email, item_name, price, rating, num_ratings, addons, tags});
+    const newUser = new Food({shop_name, vendor_email, item_name, item_type, price, rating, num_ratings, addons, addon_price, tags});
 
     newUser.save()
         .then(food_item => {
