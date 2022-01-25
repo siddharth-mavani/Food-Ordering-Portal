@@ -357,29 +357,32 @@ const BuyerDashboard = (props) => {
       .then((response) =>{
         alert("Order Placed");
         console.log(response.data);
+
+        const final_balance = balance - final_total_price;
+
+        // Update Balance
+        const updateBalance = {
+          email: final_email,
+          money: final_balance,
+        };
+
+        axios
+          .post("http://localhost:4000/buyer/updatebuyermoney", updateBalance)
+          .then((response) =>{
+            console.log(response.data);
+          })
+          .catch((error) => {
+            console.log(error);
+        });
+
       })
       .catch((error) => {
         console.log(error);
     });
 
-    const final_balance = balance - final_total_price;
+    
 
-    // Update Balance
-    const updateBalance = {
-      email: final_email,
-      money: final_balance,
-    };
-
-    axios
-      .post("http://localhost:4000/buyer/updatebuyermoney", updateBalance)
-      .then((response) =>{
-        console.log(response.data);
-      })
-      .catch((error) => {
-        console.log(error);
-    });
-
-    window.location.reload();
+    // window.location.reload();
     setShowAddToCart(false);
 
     setCurItemName("");
@@ -398,6 +401,18 @@ const BuyerDashboard = (props) => {
   const handleClose1 = () => {
     alert("Not Enough Money");
     setShowAddToCart(false);
+
+    setCurItemName("");
+    setCurShopName("");
+    setCurPrice("");
+    setDispPrice("");
+    setDefPrice("");
+    setCurItemType("");
+    setCurAddOns([]);
+    setSelAddOnes([]);
+    setCurTags([]);
+    setCurRating("");
+    setQuantity(1);
   }
 
   const handleAddOns = (addon) => {
