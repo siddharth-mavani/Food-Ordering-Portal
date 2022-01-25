@@ -9,7 +9,7 @@ import Login from "./components/Login/Login";
 import Register from "./components/Registration/Register";
 import Wallet from "./components/wallet/Wallet";
 import BuyerDashboard from "./components/Dashboard/BuyerDashboard/BuyerDashboard";
-
+import Favourite from "./components/Favourite/Favourite";
 
 const Layout = () => {
   return (
@@ -34,6 +34,7 @@ function App() {
           <Route path="/vendorprofile" element={<VendorProfile />} />
           <Route path="/wallet" element={<Wallet />} />
           <Route path="/buyerdashboard" element={<BuyerDashboard />} />
+          <Route path="/favourites" element={<Favourite />} />
         </Route>
       </Routes>
     </BrowserRouter>

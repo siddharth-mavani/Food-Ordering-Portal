@@ -1,9 +1,6 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-// const AddOnSchema = new Schema({ addon: { type: String, required: true, unique: false, }, price: { type: Number, required: true, }, }, { timestamps: true });
-// const TagSchema = new Schema({ tag: { type: String, required: true, unique:false, }, }, { timestamps: true });
-
 // Create Schema
 const FoodSchema = new Schema({
 	shop_name: {

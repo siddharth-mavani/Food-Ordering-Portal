@@ -45,5 +45,23 @@ router.post("/add", (req, res) => {
         });
 });
 
+// POST request 
+// Find food item based on email and item_name
+router.post("/getfavfood", (req, res) => {
+
+    const shop_name = req.body.shop_name;
+    const item_name = req.body.item_name;
+
+    Food.findOne({shop_name, item_name})
+    .then(food_item => {
+        return res.status(200).json(food_item);
+    })
+    .catch(err => {
+        return res.status(400).send("Error: " + err);
+    });
+
+    
+});
+
 module.exports = router;
 

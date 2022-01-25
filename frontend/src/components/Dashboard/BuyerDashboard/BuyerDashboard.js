@@ -34,7 +34,7 @@ const BuyerDashboard = (props) => {
   const [Tags, setTags] = useState([]);
   const [balance, setBalance] = useState(0);
   
-  const [FilterShopName, setFilterShopName] = useState([]);
+  const [FilterShopName, setFilterShopName] = useState("");
   const [searchText, setSearchText] = useState("");
   const [DisplayTag, setDisplayTag] = useState("");
   const [veg_nveg, setVegNveg] = useState("");
@@ -61,7 +61,6 @@ const BuyerDashboard = (props) => {
         })
         
         setTags(tags);
-        console.log(filtered_food_items);
 
         const shops = [];
         response.data.map((food_item) =>{
@@ -99,7 +98,7 @@ const BuyerDashboard = (props) => {
     let result = food_items;
 
     // Filter by min price
-    if(min_price){
+    if(min_price !== '' && min_price !== null){
       const temp = [];
       result.map((food_item) =>{
         if(food_item.price >= min_price){
@@ -111,7 +110,7 @@ const BuyerDashboard = (props) => {
     }
     
     // Filter by max price
-    if(max_price){
+    if(max_price !== '' && max_price !== null){
       const temp = [];
       result.map((food_item) =>{
         if(food_item.price <= max_price){
@@ -163,21 +162,23 @@ const BuyerDashboard = (props) => {
     }
     
     // Fuzzy Search
-    const fuse = new Fuse(result, {
-      keys: ["item_name"],
-      threshold: 0.1,
-    });
+    if(searchText !== '' && searchText !== null){
+      const fuse = new Fuse(result, {
+        keys: ["item_name"],
+        threshold: 0.1,
+      });
 
-    const search_result = fuse.search(searchText);
+      const search_result = fuse.search(searchText);
 
-    const temp = [];
+      const temp = [];
 
-    search_result.map((food_item) =>{
-      temp.push(food_item.item);
-    })
+      search_result.map((food_item) =>{
+        temp.push(food_item.item);
+      })
 
-    if(!(temp.length === 0 || searchText === "")){
-      result = temp;
+      if(!(temp.length === 0 || searchText === "")){
+        result = temp;
+      }
     }
 
     setFilteredFoodItems(result);
@@ -230,7 +231,7 @@ const BuyerDashboard = (props) => {
       }
     });
     
-    setFoodItems(usersTemp);
+    setFilteredFoodItems(usersTemp);
     setsortPrice(!sortPrice);
 
   };
@@ -248,9 +249,35 @@ const BuyerDashboard = (props) => {
       }
     });
     
-    setFoodItems(usersTemp);
+    setFilteredFoodItems(usersTemp);
     setsortRating(!sortRating);
 
+  }
+
+  const AddToFav = (food_item) => {
+
+    const email = localStorage.getItem('BuyerEmail');
+
+    const addToFav = {
+      buyer_email: email,
+      item_name: food_item.item_name,
+      shop_name: food_item.shop_name,
+    };
+
+    axios
+      .post("http://localhost:4000/fav/add", addToFav)
+      .then((response) =>{
+        console.log(response.data);
+        alert("Added to Favourites");
+      })
+      .catch((error) => {
+        console.log(error);
+    });
+
+  }
+
+  const AddToCart = (food_item) => {
+    
   }
 
   return (
@@ -263,6 +290,9 @@ const BuyerDashboard = (props) => {
         
         <Grid item xs={12} md={3} lg={3}>
           <List component="nav" aria-label="mailbox folders">
+            <ListItem text>
+              <h1>Dashboard</h1>
+            </ListItem>
             <ListItem text>
               <h1>Filters</h1>
             </ListItem>
@@ -447,13 +477,13 @@ const BuyerDashboard = (props) => {
                     </TableCell>                
                     <TableCell>{food_item.rating}</TableCell>
                     <TableCell>
-                      <Button onClick={sortChangePrice}>
-                        {sortPrice ? <ArrowDownwardIcon /> : <ArrowUpwardIcon />}
+                      <Button variant = "contained" onClick={() => {AddToFav(food_item)}}>
+                        Favourite
                       </Button> 
                     </TableCell>
                     <TableCell> 
-                      <Button onClick={sortChangeRating}>
-                        {sortPrice ? <ArrowDownwardIcon /> : <ArrowUpwardIcon />}
+                      <Button variant = "contained" onClick={() => {AddToCart(food_item)}}>
+                        Buy
                       </Button>
                     </TableCell>
                   </TableRow>
