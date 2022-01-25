@@ -8,9 +8,15 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
+import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
+
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogTitle from '@mui/material/DialogTitle';
 
 
 const BuyerDashboard = (props) => {
@@ -20,6 +26,18 @@ const BuyerDashboard = (props) => {
   const [filtered_food_items, setFilteredFoodItems] = useState([]);
   const [balance, setBalance] = useState(0);
   const [favs, setFavs] = useState([]);
+  const [defPrice, setDefPrice] = useState("");
+
+  const [curShopName, setCurShopName] = useState("");
+  const [curItemName, setCurItemName] = useState("");
+  const [curPrice, setCurPrice] = useState("");
+  const [curItemType, setCurItemType] = useState("");
+  const [curAddOns, setCurAddOns] = useState([]);
+  const [curTags, setCurTags] = useState([]);
+  const [curRating, setCurRating] = useState("");
+  const [selAddOnes, setSelAddOnes] = useState([]);
+
+  const [ShowAddToCart, setShowAddToCart] = useState(false);
 
   useEffect(() => {
 
@@ -110,13 +128,46 @@ const BuyerDashboard = (props) => {
   }
 
   const AddToCart = (food_item) => {
-    
+    setCurItemName(food_item.item_name);
+    setCurShopName(food_item.shop_name);
+    setCurPrice(food_item.price);
+    setDefPrice(food_item.price);
+    setCurItemType(food_item.item_type);
+    setCurAddOns(food_item.addons);
+    setCurTags(food_item.tags);
+    setCurRating(food_item.rating);
+
+    setShowAddToCart(true);
+  }
+
+  const handleOpen = () => {
+
+  }
+
+  const handleClose = () => {
+    setShowAddToCart(false);
+  }
+
+  const handleAddOns = (addon) => {
+    let temp_price = curPrice;
+    temp_price += addon.price;
+    setCurPrice(temp_price);
+
+    setSelAddOnes(prev => [...prev, addon.name]);
+  }
+
+  const remAddOns = (addon) => {
+    let temp_price = curPrice;
+    temp_price -= addon.price;
+    setCurPrice(temp_price);
+
+    setSelAddOnes(prev => prev.filter(item => item !== addon.name));
   }
 
   return (
     <div>
       <Grid container item xs={12} md={3} lg={3}>
-        <Button variant="contained" onClick={GoToWallet}>Current Balance = {balance}</Button>
+        <Button variant="contained" onClick={GoToWallet} color="secondary">Current Balance = {balance}</Button>
       </Grid>
       
       <Grid item>
@@ -182,7 +233,7 @@ const BuyerDashboard = (props) => {
                       </Button> 
                     </TableCell>
                     <TableCell> 
-                      <Button variant = "contained" onClick={() => {AddToCart(food_item)}}>
+                      <Button variant = "contained" onClick={() => {AddToCart(food_item)}} color="success">
                         Buy
                       </Button>
                     </TableCell>
@@ -193,6 +244,126 @@ const BuyerDashboard = (props) => {
           </Paper>
         </Grid>
       </Grid>
+
+      <Dialog
+      sx={{ '& .MuiDialog-paper': { width: '90%', maxHeight: 500 } }}
+      maxWidth="xs"
+      open={ShowAddToCart}
+      onClose={handleClose}
+      >
+      <DialogTitle>{curShopName}</DialogTitle>
+
+      <DialogContent dividers>
+      
+        <Grid container spacing={4} xs={20}>
+
+          <Grid item xs={6}>
+              <TextField
+                id="standard-basic"
+                label="Item Name"
+                value={curItemName}
+                fullWidth={true}
+              /> 
+          </Grid>
+
+          <Grid item xs={6}>
+              <TextField
+                id="standard-basic"
+                label="Price"
+                value={defPrice}
+                fullWidth={true}
+              /> 
+          </Grid>
+
+          <Grid item xs={6}>
+              <TextField
+                id="standard-basic"
+                label="Type"
+                value={curItemType}
+                fullWidth={true}
+              /> 
+          </Grid>
+
+          <Grid item xs={6}>
+              <TextField
+                id="standard-basic"
+                label="Rating"
+                value={curRating}
+                fullWidth={true}
+              /> 
+          </Grid>
+          
+          {
+            curAddOns.map((addon, ind) => {
+              return (
+                <Grid container xs={16} spacing={4}>
+
+                  <Grid item xs={4} sx={{ml:5.5, mt:3}}>
+                      <TextField
+                        id="standard-basic"
+                        label="Add On"
+                        value={addon.name}
+                        fullWidth={true}
+                      /> 
+                  </Grid>
+
+                  <Grid item xs={4} sx={{ml:0.01, mt:3}}>
+                      <TextField
+                        id="standard-basic"
+                        label="Price"
+                        value={addon.price}
+                        fullWidth={true}
+                      /> 
+                  </Grid>
+
+                  {
+                    (selAddOnes.includes(addon.name)) ? 
+                    <Grid item xs={2} sx={{ml:0, mt:4}}>
+                      <Button onClick={() => {remAddOns(addon)}} variant="contained" color="error">
+                      Remove
+                      </Button>
+                    </Grid>
+
+                      :
+                      <Grid item xs={2} sx={{ml:0, mt:4}}>
+                      <Button onClick={() => {handleAddOns(addon)}} variant="contained" color="primary">
+                      Add
+                      </Button>
+                      </Grid>
+                  }
+                    
+                </Grid>
+              )
+            })
+          }
+        </Grid>
+
+      </DialogContent>
+
+      <DialogActions>
+
+        <Button onClick={handleClose} variant="contained" color="error">
+          Cancel
+        </Button>
+
+        <Button onClick={handleClose} variant="contained" color="success" sx={{ml:5}}>Confirm Order</Button>
+
+        <Grid item xs={3} sx={{ml:5}}>
+          <TextField
+            id="standard-basic"
+            label="Total"
+            value={curPrice}
+            width = {4}
+          />
+      </Grid>
+
+      </DialogActions>
+    </Dialog>
+                  
+
+
+
+
     </div>
   );
 };
