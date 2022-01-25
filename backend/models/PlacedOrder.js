@@ -21,6 +21,12 @@ const PlacedOrderSchema = new Schema({
 		unique: false,
 		trim: true,
 	},
+    addons: {
+        type: [String],
+        required: false,
+        unique: false,
+        trim: true,
+    },
     total_price: {
         type: Number,
         required: true,
@@ -49,5 +55,5 @@ const PlacedOrderSchema = new Schema({
 	timestamps: true,
 });
 
-PlacedOrderSchema.index({item_name: 1, shop_name: 1, buyer_email: 1}, {unique: true});
+PlacedOrderSchema.index({item_name: 1, shop_name: 1, buyer_email: 1, addons: 1}, {unique: true});
 module.exports = PlacedOrder = mongoose.model("PlacedOrder", PlacedOrderSchema);
