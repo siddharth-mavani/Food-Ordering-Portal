@@ -55,5 +55,4 @@ const PlacedOrderSchema = new Schema({
 	timestamps: true,
 });
 
-PlacedOrderSchema.index({item_name: 1, shop_name: 1, buyer_email: 1, addons: 1}, {unique: true});
 module.exports = PlacedOrder = mongoose.model("PlacedOrder", PlacedOrderSchema);

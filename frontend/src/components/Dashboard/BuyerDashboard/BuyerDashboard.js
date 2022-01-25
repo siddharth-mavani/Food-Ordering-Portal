@@ -313,7 +313,86 @@ const BuyerDashboard = (props) => {
   }
 
   const handleClose = () => {
+
     setShowAddToCart(false);
+
+    setCurItemName("");
+    setCurShopName("");
+    setCurPrice("");
+    setDispPrice("");
+    setDefPrice("");
+    setCurItemType("");
+    setCurAddOns([]);
+    setSelAddOnes([]);
+    setCurTags([]);
+    setCurRating("");
+    setQuantity(1);
+  }
+
+  const handleConfirm = () => {
+
+    const final_email = localStorage.getItem("BuyerEmail");
+    const final_shop_name = curShopName;
+    const final_item_name = curItemName;
+    const final_addons = curAddOns;
+    const final_total_price = dispPrice;
+    const final_quantity = quantity;
+    const final_rating = curRating;
+
+    console.log(final_addons);
+    // Add to PlacedOrder Database
+    const addToPlacedOrder = {
+      buyer_email: final_email,
+      shop_name: final_shop_name,
+      item_name: final_item_name,
+      addons: final_addons,
+      total_price: final_total_price,
+      quantity: final_quantity,
+      rating: final_rating,
+      status: "Placed",
+    };
+
+    axios
+      .post("http://localhost:4000/placedorder/add", addToPlacedOrder)
+      .then((response) =>{
+        alert("Order Placed");
+        console.log(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+    });
+
+    const final_balance = balance - final_total_price;
+
+    // Update Balance
+    const updateBalance = {
+      email: final_email,
+      money: final_balance,
+    };
+
+    axios
+      .post("http://localhost:4000/buyer/updatebuyermoney", updateBalance)
+      .then((response) =>{
+        console.log(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+    });
+
+    window.location.reload();
+    setShowAddToCart(false);
+
+    setCurItemName("");
+    setCurShopName("");
+    setCurPrice("");
+    setDispPrice("");
+    setDefPrice("");
+    setCurItemType("");
+    setCurAddOns([]);
+    setSelAddOnes([]);
+    setCurTags([]);
+    setCurRating("");
+    setQuantity(1);
   }
 
   const handleClose1 = () => {
@@ -714,7 +793,7 @@ const BuyerDashboard = (props) => {
         {
           (balance >= dispPrice) ? 
           
-            <Button onClick={handleClose} variant="contained" color="success" sx={{ml:5}}>
+            <Button onClick={handleConfirm} variant="contained" color="success" sx={{ml:5}}>
               Confirm Order
             </Button>
 
