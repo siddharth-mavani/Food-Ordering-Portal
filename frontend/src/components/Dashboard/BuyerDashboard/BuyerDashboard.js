@@ -50,11 +50,13 @@ const BuyerDashboard = (props) => {
   const [curShopName, setCurShopName] = useState("");
   const [curItemName, setCurItemName] = useState("");
   const [curPrice, setCurPrice] = useState("");
+  const [dispPrice, setDispPrice] = useState("");
   const [curItemType, setCurItemType] = useState("");
   const [curAddOns, setCurAddOns] = useState([]);
   const [curTags, setCurTags] = useState([]);
   const [curRating, setCurRating] = useState("");
   const [selAddOnes, setSelAddOnes] = useState([]);
+  const [quantity, setQuantity] = useState(1);
 
   const [ShowAddToCart, setShowAddToCart] = useState(false);
 
@@ -296,6 +298,7 @@ const BuyerDashboard = (props) => {
     setCurItemName(food_item.item_name);
     setCurShopName(food_item.shop_name);
     setCurPrice(food_item.price);
+    setDispPrice(food_item.price);
     setDefPrice(food_item.price);
     setCurItemType(food_item.item_type);
     setCurAddOns(food_item.addons);
@@ -313,10 +316,24 @@ const BuyerDashboard = (props) => {
     setShowAddToCart(false);
   }
 
+  const handleClose1 = () => {
+    alert("Not Enough Money");
+    setShowAddToCart(false);
+  }
+
   const handleAddOns = (addon) => {
     let temp_price = curPrice;
     temp_price += addon.price;
     setCurPrice(temp_price);
+    
+    if(quantity > 1){
+      temp_price = dispPrice;
+      temp_price += addon.price * quantity;
+      setDispPrice(temp_price);
+    }
+    else{
+      setDispPrice(temp_price);
+    }
 
     setSelAddOnes(prev => [...prev, addon.name]);
   }
@@ -326,7 +343,38 @@ const BuyerDashboard = (props) => {
     temp_price -= addon.price;
     setCurPrice(temp_price);
 
+    if(quantity > 1){
+      temp_price = dispPrice;
+      temp_price -= addon.price * quantity;
+      setDispPrice(temp_price);
+    }
+    else{
+      setDispPrice(temp_price);
+    }
+
     setSelAddOnes(prev => prev.filter(item => item !== addon.name));
+  }
+
+  const increment = () => {
+    let temp = dispPrice;
+    temp += curPrice;
+    setDispPrice(temp);
+
+    let temp_quantity = quantity;
+    temp_quantity += 1;
+    setQuantity(temp_quantity);
+  }
+
+  const decrement = () => {
+    if(quantity > 1){
+      let temp = dispPrice;
+      temp -= curPrice;
+      setDispPrice(temp);
+
+      let temp_quantity = quantity;
+      temp_quantity -= 1;
+      setQuantity(temp_quantity);
+    }
   }
 
   return (
@@ -631,6 +679,28 @@ const BuyerDashboard = (props) => {
               )
             })
           }
+
+          <Grid item xs={4}>
+              <TextField
+                id="standard-basic"
+                label="Quantity"
+                value={quantity}
+                fullWidth={true}
+              /> 
+          </Grid>
+
+          <Grid item xs={3.5} sx={{ml:0, mt:1}}>
+            <Button variant="contained" color="primary" onClick={increment}>
+              Increment
+            </Button> 
+          </Grid>
+
+          <Grid item xs={4} sx={{ml:0, mt:1}}>
+            <Button variant="contained" color="primary" color="error" onClick={decrement}>
+              Decrement
+            </Button> 
+          </Grid>
+
         </Grid>
 
       </DialogContent>
@@ -640,14 +710,28 @@ const BuyerDashboard = (props) => {
         <Button onClick={handleClose} variant="contained" color="error">
           Cancel
         </Button>
+        
+        {
+          (balance >= dispPrice) ? 
+          
+            <Button onClick={handleClose} variant="contained" color="success" sx={{ml:5}}>
+              Confirm Order
+            </Button>
 
-        <Button onClick={handleClose} variant="contained" color="success" sx={{ml:5}}>Confirm Order</Button>
+            :
+
+            <Button onClick={handleClose1} variant="contained" color="error" sx={{ml:5}}>
+              Confirm Order
+            </Button>
+
+        }
+       
 
         <Grid item xs={3} sx={{ml:5}}>
           <TextField
             id="standard-basic"
             label="Total"
-            value={curPrice}
+            value={dispPrice}
             width = {4}
           />
       </Grid>
