@@ -9,6 +9,7 @@ import Login from "./components/Login/Login";
 import Register from "./components/Registration/Register";
 import Wallet from "./components/wallet/Wallet";
 import BuyerDashboard from "./components/Dashboard/BuyerDashboard/BuyerDashboard";
+import VendorDashboard from "./components/Dashboard/VendorDashboard/VendorDashboard";
 import Favourite from "./components/Favourite/Favourite";
 import MyOrders from "./components/myOrders/myOrders";
 import VendorOrders from "./components/vendorOrders/vendorOrders";
@@ -36,6 +37,7 @@ function App() {
           <Route path="/vendorprofile" element={<VendorProfile />} />
           <Route path="/wallet" element={<Wallet />} />
           <Route path="/buyerdashboard" element={<BuyerDashboard />} />
+          <Route path="/vendordashboard" element={<VendorDashboard />} />
           <Route path="/favourites" element={<Favourite />} />
           <Route path="/orders" element={<MyOrders />} />
           <Route path="/vendororders" element={<VendorOrders />} />

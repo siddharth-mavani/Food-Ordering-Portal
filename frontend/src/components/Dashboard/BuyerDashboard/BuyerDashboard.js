@@ -663,7 +663,7 @@ const BuyerDashboard = (props) => {
                       }
                       </ul>
                     </TableCell>                
-                    <TableCell>{food_item.rating}</TableCell>
+                    <TableCell>{food_item.rating.toFixed(2)}</TableCell>
                     <TableCell>
                       <Button variant = "contained" onClick={() => {AddToFav(food_item)}}>
                         Favourite
@@ -725,7 +725,7 @@ const BuyerDashboard = (props) => {
               <TextField
                 id="standard-basic"
                 label="Rating"
-                value={curRating}
+                value={Number(curRating).tofixed(2)}
                 fullWidth={true}
               /> 
           </Grid>

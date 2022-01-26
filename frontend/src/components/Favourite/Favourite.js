@@ -365,7 +365,7 @@ const BuyerDashboard = (props) => {
                       }
                       </ul>
                     </TableCell>                
-                    <TableCell>{food_item.rating}</TableCell>
+                    <TableCell>{food_item.rating.toFixed(2)}</TableCell>
                     <TableCell>
                       <Button variant = "contained" onClick={() => {DelFav(food_item)}}>
                         Remove Favourite
@@ -427,7 +427,7 @@ const BuyerDashboard = (props) => {
               <TextField
                 id="standard-basic"
                 label="Rating"
-                value={curRating}
+                value={Number(curRating).toFixed(2)}
                 fullWidth={true}
               /> 
           </Grid>
