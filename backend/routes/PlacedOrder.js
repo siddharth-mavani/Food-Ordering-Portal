@@ -61,5 +61,39 @@ router.post("/getbyemail", (req, res) => {
 });
 
 
+// POST request 
+// Get based on shop_name
+router.post("/getbyshopname", (req, res) => {
+
+    const shop_name = req.body.shop_name;
+
+    PlacedOrder.find({shop_name: shop_name}, function(err, placedorder) {
+        if (err) {
+            res.status(400).send("Error: " + err);
+        } else {
+            console.log(placedorder);
+            res.json(placedorder);
+        }
+    })
+}); 
+
+// POST request
+// update status of placedorder
+router.post("/updatestatus", (req, res) => {
+
+    const shop_name = req.body.shop_name;
+    const time = req.body.time;
+    const status = req.body.status;
+
+    PlacedOrder.findOneAndUpdate({shop_name: shop_name, createdAt: time}, {status: status}, function(err, placedorder) {
+        if (err) {
+            res.status(400).send("Error: " + err);
+        } else {
+            res.json(placedorder);
+        }
+    })
+});
+
+
 module.exports = router;
 

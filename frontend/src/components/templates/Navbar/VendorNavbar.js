@@ -85,8 +85,8 @@ const BuyerNavbar = () => {
               <MenuItem onClick={() => {navigate("/vendordashboard"); handleCloseNavMenu()}}>
                 <Typography textAlign="center">Dashboard</Typography>
               </MenuItem>
-              <MenuItem onClick={() => {navigate("/menu"); handleCloseNavMenu()}}>
-                <Typography textAlign="center">Menu</Typography>
+              <MenuItem onClick={() => {navigate("/vendororders"); handleCloseNavMenu()}}>
+                <Typography textAlign="center">My Orders</Typography>
               </MenuItem>
               <MenuItem onClick={() => {navigate("/statistics"); handleCloseNavMenu()}}>
                 <Typography textAlign="center">Statistics</Typography>
@@ -104,12 +104,12 @@ const BuyerNavbar = () => {
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
               
-              <Button onClick={() => {navigate("/buyerdashboard"); handleCloseNavMenu()}} sx={{ my: 2, color: 'white', display: 'block' }}>
+              <Button onClick={() => {navigate("/vendordashboard"); handleCloseNavMenu()}} sx={{ my: 2, color: 'white', display: 'block' }}>
                 Dashboard
               </Button>
 
-              <Button onClick={() => {navigate("/menu"); handleCloseNavMenu()}} sx={{ my: 2, color: 'white', display: 'block' }}>
-                Menu
+              <Button onClick={() => {navigate("/vendororders"); handleCloseNavMenu()}} sx={{ my: 2, color: 'white', display: 'block' }}>
+                My Orders
               </Button>
 
               <Button onClick={() => {navigate("/statistics"); handleCloseNavMenu()}} sx={{ my: 2, color: 'white', display: 'block' }}>

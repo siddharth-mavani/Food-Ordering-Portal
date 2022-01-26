@@ -50,7 +50,7 @@ const VendorLogin = (props) => {
         alert("Login Successful");
         console.log(response.data);
         localStorage.setItem("VendorEmail", email);
-        navigate("/vendorprofile");
+        navigate("/vendordashboard");
         window.location.reload();
       })
       .catch((response) => {

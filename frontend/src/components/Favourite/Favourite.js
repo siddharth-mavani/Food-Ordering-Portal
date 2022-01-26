@@ -168,7 +168,7 @@ const BuyerDashboard = (props) => {
     const final_email = localStorage.getItem("BuyerEmail");
     const final_shop_name = curShopName;
     const final_item_name = curItemName;
-    const final_addons = curAddOns;
+    const final_addons = selAddOnes;
     const final_total_price = dispPrice;
     const final_quantity = quantity;
     const final_rating = curRating;
