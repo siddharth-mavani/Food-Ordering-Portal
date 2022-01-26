@@ -10,6 +10,7 @@ import Register from "./components/Registration/Register";
 import Wallet from "./components/wallet/Wallet";
 import BuyerDashboard from "./components/Dashboard/BuyerDashboard/BuyerDashboard";
 import Favourite from "./components/Favourite/Favourite";
+import MyOrders from "./components/myOrders/myOrders";
 
 const Layout = () => {
   return (
@@ -35,6 +36,7 @@ function App() {
           <Route path="/wallet" element={<Wallet />} />
           <Route path="/buyerdashboard" element={<BuyerDashboard />} />
           <Route path="/favourites" element={<Favourite />} />
+          <Route path="/orders" element={<MyOrders />} />
         </Route>
       </Routes>
     </BrowserRouter>

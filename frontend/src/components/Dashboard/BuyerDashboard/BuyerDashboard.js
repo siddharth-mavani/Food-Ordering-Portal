@@ -349,7 +349,7 @@ const BuyerDashboard = (props) => {
       total_price: final_total_price,
       quantity: final_quantity,
       rating: final_rating,
-      status: "Placed",
+      status: "PLACED",
     };
 
     axios

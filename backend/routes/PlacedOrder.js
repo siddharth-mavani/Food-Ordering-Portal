@@ -45,6 +45,21 @@ router.post("/add", (req, res) => {
         });
 });
 
+// POST request 
+// Get based on email
+router.post("/getbyemail", (req, res) => {
+
+    const email = req.body.buyer_email;
+
+    PlacedOrder.find({buyer_email: email}, function(err, placedorder) {
+        if (err) {
+            res.status(400).send("Error: " + err);
+        } else {
+            res.json(placedorder);
+        }
+    })
+});
+
 
 module.exports = router;
 

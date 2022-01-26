@@ -75,7 +75,7 @@ router.post("/login", (req, res) => {
 router.post("/getbuyer", (req, res) => {
     Buyer.findOne({'email': req.body.email}, function(err, buyer) {
 		if (err) {
-			console.log(err);
+			res.status(400).send("Error: " + err);
 		} else {
 			res.json(buyer);
 		}

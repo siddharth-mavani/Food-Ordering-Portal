@@ -78,7 +78,7 @@ const BuyerDashboard = (props) => {
           };
 
           axios
-            .post("http://localhost:4000/food/getfavfood", getFood)
+            .post("http://localhost:4000/food/getfood", getFood)
             .then((response1) => {
               setFilteredFoodItems(prev => [...prev,response1.data]);
               setFoodItems(prev => [...prev,response1.data]);
@@ -183,7 +183,7 @@ const BuyerDashboard = (props) => {
       total_price: final_total_price,
       quantity: final_quantity,
       rating: final_rating,
-      status: "Placed",
+      status: "PLACED",
     };
 
     axios
