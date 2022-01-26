@@ -11,6 +11,7 @@ import TableBody from "@mui/material/TableBody";
 import Button from "@mui/material/Button";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
+import { setRef } from "@mui/material";
 
 const VendorOrders = () => {
 
@@ -18,6 +19,7 @@ const VendorOrders = () => {
 
   const [food_items, setFoodItems] = useState([]);
   const [shopName, setShopName] = useState("");
+  const [superCount, setSuperCount] = useState(0);
 
   useEffect(() => {
 
@@ -34,7 +36,6 @@ const VendorOrders = () => {
       .then((response) =>{
 
         setShopName(response.data.shop_name);
-        console.log(response.data.shop_name);
 
         const getPlacedOrder = {
             shop_name: response.data.shop_name,
@@ -44,9 +45,16 @@ const VendorOrders = () => {
             .post("http://localhost:4000/placedorder/getbyshopname", getPlacedOrder)
             .then((response) =>{
     
-                console.log("hey1234");
-                console.log(response.data);
                 setFoodItems(prev => [...prev, response.data]);
+
+                let temp_count = 0;
+                response.data.map((food_item) => {
+                  if(food_item.status == "ACCEPTED" || food_item.status == "COOKING"){
+                    temp_count++;
+                  }
+                })
+                setSuperCount(temp_count);
+
     
             })
             .catch((error) => {
@@ -66,38 +74,52 @@ const VendorOrders = () => {
 
   const handleNextStage = (food_item) => {
 
-    let status = "";
-
-    if(food_item.status === "PLACED"){
-        status = "ACCEPTED";
-    }
-    else if(food_item.status === "ACCEPTED"){
-        status = "COOKING";
-    }
-    else if(food_item.status === "COOKING"){
-        status = "READY FOR PICKUP";
-    }
-    else if(food_item.status === "READY FOR PICKUP"){
-        status = "COMPLETED";
-    }
     
-    const updatePlacedOrder = {
-      shop_name: shopName,
-      time: food_item.createdAt,
-      status: status,
-    };
+      let status = "";
 
-    axios
-      .post("http://localhost:4000/placedorder/updatestatus", updatePlacedOrder)
-      .then((response) => {
-        console.log(response);
-        alert("Status Updated Successfully !");
-        window.location.reload();
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+      if(food_item.status === "PLACED"){
+        if(superCount <=9){
+          status = "ACCEPTED";
+        }
+        else{
+          alert("Max limit reached");
+          return;
+        }
+      }
+      if(food_item.status === "ACCEPTED"){
+          status = "COOKING";
+      }
+      if(food_item.status === "COOKING"){
+          
+        status = "READY FOR PICKUP";
+        setSuperCount(prev => prev - 1);
+         
+      }
+      if(food_item.status === "READY FOR PICKUP"){
+          status = "COMPLETED";
+      }
+      
+      const updatePlacedOrder = {
+        shop_name: shopName,
+        time: food_item.createdAt,
+        status: status,
+      };
 
+      axios
+        .post("http://localhost:4000/placedorder/updatestatus", updatePlacedOrder)
+        .then((response) => {
+          console.log(response);
+          alert("Status Updated Successfully !");
+
+          if(!(status === "PLACED" || status === "ACCEDPTED")){
+            setSuperCount(prev => prev + 1);
+          }
+
+          window.location.reload();
+        })
+        .catch((error) => {
+          console.log(error);
+        });
 
   }
 
@@ -113,13 +135,47 @@ const VendorOrders = () => {
         .post("http://localhost:4000/placedorder/updatestatus", updatePlacedOrder)
         .then((response) => {
           console.log(response);
-          alert("Status Updated Successfully !");
+
+          let temp_amount = 0;
+          
+          // Get Buyer from email
+          const getBuyer = {
+            email: food_item.buyer_email,
+          };
+
+          axios
+            .post("http://localhost:4000/buyer/getbuyer", getBuyer)
+            .then((response) => {
+              console.log(response);
+              temp_amount = response.data.money;
+              
+              const updateWallet = {
+                email: food_item.buyer_email,
+                money: Number(food_item.total_price) + Number(temp_amount),
+              };
+
+              console.log(updateWallet);
+
+              axios
+                .post("http://localhost:4000/buyer/updatebuyermoney", updateWallet)
+                .then((response) => {
+                  console.log(response);
+                  alert("Money Updated Successfully !");
+                })
+                .catch((error) => {
+                  console.log("in" + error);
+                });
+
+            })
+            .catch((error) => {
+              console.log("out"+ error);
+            });
+
           window.location.reload();
         })
         .catch((error) => {
           console.log(error);
         });
-        
   }
 
   const GoToDashboard = () => {
@@ -178,9 +234,8 @@ const VendorOrders = () => {
                         </TableCell>
                         <TableCell>{food_item.total_price}</TableCell> 
                         <TableCell>{food_item.quantity}</TableCell>  
-                        <TableCell>{(new Date(food_item.createdAt)).getHours()}:{(new Date(food_item.createdAt)).getMinutes()}</TableCell>
+                        <TableCell>{(new Date(food_item.createdAt)).toTimeString().split(" ")[0]}</TableCell>
                         <TableCell>
-
                             {food_item.status === "REJECTED" ? 
                                 <Button variant="contained" color="error">
                                     {food_item.status}

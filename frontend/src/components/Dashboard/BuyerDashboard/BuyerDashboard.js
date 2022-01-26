@@ -725,7 +725,7 @@ const BuyerDashboard = (props) => {
               <TextField
                 id="standard-basic"
                 label="Rating"
-                value={Number(curRating).tofixed(2)}
+                value={Number(curRating).toFixed(2)}
                 fullWidth={true}
               /> 
           </Grid>
