@@ -8,26 +8,16 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
-import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
-import Autocomplete from "@mui/material/Autocomplete";
-
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogTitle from '@mui/material/DialogTitle';
-
 
 const VendorOrders = () => {
 
-  const [food_items, setFoodItems] = useState([]);
-  const [showRating, setShowRating] = useState(false);
-  const [newRating, setNewRating] = useState(0);
+  const navigate = useNavigate();
 
+  const [food_items, setFoodItems] = useState([]);
   const [shopName, setShopName] = useState("");
-  const [itemName, setItemName] = useState("");
 
   useEffect(() => {
 
@@ -73,18 +63,6 @@ const VendorOrders = () => {
 
 
   }, []);
-
-  const handleRate = (food_item) => {
-    setShopName(food_item.shop_name);
-    setItemName(food_item.item_name);
-  }
-
-  const handleClose = () => {
-    setShowRating(false);
-
-    setShopName("");
-    setItemName("");
-  }
 
   const handleNextStage = (food_item) => {
 
@@ -146,31 +124,6 @@ const VendorOrders = () => {
 
   const GoToDashboard = () => {
     useNavigate("/vendordashboard");
-    }
-
-  const confirmRating = () => {
-            
-        const updateRating = {
-            shop_name: shopName,
-            item_name: itemName,
-            rating: newRating,
-        };
-        
-        axios
-        .post("http://localhost:4000/food/updateRating", updateRating)
-        .then((response) =>{
-    
-            console.log(response.data);
-    
-            setShowRating(false);
-    
-            setShopName("");
-            setItemName("");
-        })
-        .catch((error) => {
-            console.log(error);
-        });
-    
   }
 
   return (
