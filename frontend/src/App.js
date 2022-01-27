@@ -13,6 +13,7 @@ import VendorDashboard from "./components/Dashboard/VendorDashboard/VendorDashbo
 import Favourite from "./components/Favourite/Favourite";
 import MyOrders from "./components/myOrders/myOrders";
 import VendorOrders from "./components/vendorOrders/vendorOrders";
+import Statistics from "./components/Statistics/Statistics";
 
 const Layout = () => {
   return (
@@ -41,6 +42,7 @@ function App() {
           <Route path="/favourites" element={<Favourite />} />
           <Route path="/orders" element={<MyOrders />} />
           <Route path="/vendororders" element={<VendorOrders />} />
+          <Route path="/statistics" element={<Statistics />} />
         </Route>
       </Routes>
     </BrowserRouter>

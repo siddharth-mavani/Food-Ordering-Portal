@@ -80,12 +80,12 @@ const BuyerDashboard = (props) => {
           axios
             .post("http://localhost:4000/food/getfood", getFood)
             .then((response1) => {
-              setFilteredFoodItems(prev => [...prev,response1.data]);
-              setFoodItems(prev => [...prev,response1.data]);
+              setFoodItems((food_items) => [...food_items, response1.data]);
+              setFilteredFoodItems((filtered_food_items) => [...filtered_food_items, response1.data]);
             })
             .catch((error) => {
               console.log(error);
-            });
+            });          
 
         });
         
@@ -340,7 +340,10 @@ const BuyerDashboard = (props) => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {filtered_food_items.map((food_item, ind) => (
+                
+                { filtered_food_items.length > 0 ?
+                
+                filtered_food_items.map((food_item, ind) => (
                   <TableRow key={ind}>
                     <TableCell>{ind+1}</TableCell>
                     <TableCell>{food_item.shop_name}</TableCell>
@@ -377,7 +380,11 @@ const BuyerDashboard = (props) => {
                       </Button>
                     </TableCell>
                   </TableRow>
-                ))}
+                ))
+              
+              : <>  </>
+              
+              }
               </TableBody>
             </Table>
           </Paper>
