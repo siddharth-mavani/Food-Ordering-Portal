@@ -59,15 +59,48 @@ const BuyerDashboard = (props) => {
   const [quantity, setQuantity] = useState(1);
 
   const [ShowAddToCart, setShowAddToCart] = useState(false);
+  const [closedShopNames, setClosedShopNames] = useState([])
+  const [closedShops, setClosedShops] = useState([]);
 
+  const [openNum, setOpenNum] = useState(0);
 
   useEffect(() => {
+
+    let closed = [];
+
+    axios
+      .get("http://localhost:4000/vendor/getclosedshopnames")
+      .then(res => {
+
+        setClosedShopNames(res.data);
+        closed.push(res.data);
+
+      })
+      .catch(err => {
+        console.log(err);
+      });
+
     axios
       .get("http://localhost:4000/food")
       .then((response) => {
-        setFoodItems(response.data);
-        setSortedFoodItems(response.data);
-        setFilteredFoodItems(response.data);
+
+        let temp = [];
+        let count = 0;
+
+        response.data.map((item) => {
+          if(!closed[0].includes(item.shop_name)){
+            temp.push(item);
+            count++;
+          }
+          else{
+            setClosedShops(prev => [...prev, item]);
+          }
+        })
+
+        setFoodItems(temp);
+        setSortedFoodItems(temp);
+        setFilteredFoodItems(temp);
+        setOpenNum(count);
         setSearchText("");
 
         const tags = [];
@@ -676,6 +709,46 @@ const BuyerDashboard = (props) => {
                     </TableCell>
                   </TableRow>
                 ))}
+
+                {closedShops.map((food_item, ind) => (
+                  <TableRow key={ind}>
+                    <TableCell>{ind + openNum + 1}</TableCell>
+                    <TableCell>{food_item.shop_name}</TableCell>
+                    <TableCell>{food_item.item_name}</TableCell>
+                    <TableCell>{food_item.price}</TableCell> 
+                    <TableCell>{food_item.item_type}</TableCell>  
+                    <TableCell>
+                      <ul class="unstyled">
+                      {
+                      food_item.addons.map((addon) => {
+                        return <li>{addon.name}</li>
+                      })
+                      }
+                      </ul>
+                    </TableCell> 
+                    <TableCell>
+                    <ul class="unstyled">
+                      {
+                      food_item.tags.map((tag) => {
+                        return <li>{tag}</li>
+                      })
+                      }
+                      </ul>
+                    </TableCell>                
+                    <TableCell>{food_item.rating.toFixed(2)}</TableCell>
+                    <TableCell>
+                      <Button variant = "contained" onClick={() => {AddToFav(food_item)}}>
+                        Favourite
+                      </Button> 
+                    </TableCell>
+                    <TableCell> 
+                      <Button variant = "contained" onClick={() => {AddToCart(food_item)}} color="error" disabled="true" >
+                        Buy
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                ))}
+
               </TableBody>
             </Table>
           </Paper>

@@ -18,6 +18,37 @@ router.get("/", function(req, res) {
 	})
 });
 
+// GET request
+// Get Closed shop names
+router.get("/getclosedshopnames", (req, res) => {
+    Vendor.find(function(err, vendors) {
+        if (err) {
+            console.log(err);
+        } else {
+
+            let temp = [];
+            var today = new Date();
+            var time = Number(today.getHours()) * 60 + Number(today.getMinutes());
+
+            vendors.map(vendor => {
+                let open_time_min = parseInt(vendor.open_time.substring(0,2))*60 + parseInt(vendor.open_time.substring(3,5));
+                let close_time_min = parseInt(vendor.close_time.substring(0,2))*60 + parseInt(vendor.close_time.substring(3,5));
+                
+            if(open_time_min <= close_time_min) {
+                if(time < open_time_min || time > close_time_min){
+                    temp.push(vendor.shop_name);
+                }
+            else
+                if (time > close_time_min || time < open_time_min)
+                    temp.push(vendor.shop_name);
+           
+            }
+        })
+        return res.json(temp);
+    }}
+)
+});
+
 
 // POST request 
 // Add a vendor to the database
@@ -99,7 +130,6 @@ router.post("/updatevendor", (req, res) => {
         })
     .catch(err => res.status(400).json(err))
 });
-
 
 module.exports = router;
 

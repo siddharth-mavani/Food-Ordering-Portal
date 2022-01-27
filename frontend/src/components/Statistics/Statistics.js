@@ -1,29 +1,12 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Chip from '@mui/material/Chip';
-import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Grid";
-import TableCell from "@mui/material/TableCell";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import Button from "@mui/material/Button";
-import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
-import { setRef } from "@mui/material";
+
 
 const Statistics = () => {
 
-  const navigate = useNavigate();
-
-  const [food_items, setFoodItems] = useState([]);
-  const [shopName, setShopName] = useState("");
-  const [superCount, setSuperCount] = useState(0);
-
   const [top5, setTop5] = useState([]);
-  const [completed, setCompleted] = useState([]);
   const [totalPlaced, setTotalPlaced] = useState(0);
   const [numPending, setNumPending] = useState(0);
   const [numCompleted, setNumCompleted] = useState(0);

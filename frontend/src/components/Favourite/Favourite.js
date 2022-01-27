@@ -41,9 +41,30 @@ const BuyerDashboard = (props) => {
 
   const [ShowAddToCart, setShowAddToCart] = useState(false);
 
+  const [closedShopNames, setClosedShopNames] = useState([])
+  const [closedShops, setClosedShops] = useState([]);
+  const [openNum, setOpenNum] = useState(0);
+
+
   useEffect(() => {
 
     console.log("Welcome to the Buyer Dashboard!");
+
+    let closed = [];
+
+    axios
+      .get("http://localhost:4000/vendor/getclosedshopnames")
+      .then(res => {
+
+        setClosedShopNames(res.data);
+        closed.push(res.data);
+
+      })
+      .catch(err => {
+        console.log(err);
+      });
+
+      console.log(closed);
 
     const email = localStorage.getItem('BuyerEmail');
 
@@ -66,11 +87,14 @@ const BuyerDashboard = (props) => {
 
     axios
       .post("http://localhost:4000/fav/getbyemail", getFav)
-      .then((response) => {
-        
-        setFavs(response.data);
+      .then((response) => {        
 
-        response.data.map((fav) => {
+        let temp = [];
+        let count = 0;
+
+        console.log(response.data);
+
+        response.data?.map((fav) => {
 
           const getFood = {
             shop_name: fav.shop_name,
@@ -80,14 +104,29 @@ const BuyerDashboard = (props) => {
           axios
             .post("http://localhost:4000/food/getfood", getFood)
             .then((response1) => {
-              setFoodItems((food_items) => [...food_items, response1.data]);
-              setFilteredFoodItems((filtered_food_items) => [...filtered_food_items, response1.data]);
+
+              let temp1 = closed[0];
+              console.log(temp1.includes(fav.shop_name));
+              if(!(temp1.includes(fav.shop_name))){
+                temp.push(response1.data);
+                count++;
+              }
+              else{
+                setClosedShops(prev => [...prev, response1.data]);
+              }
             })
             .catch((error) => {
               console.log(error);
-            });          
-
+            });
+ 
         });
+
+        console.log(temp);
+        // console.log(closedShopNames);
+
+        setFoodItems(temp);
+        setOpenNum(count);
+        setFilteredFoodItems(temp);
         
       })
       .catch((error) => {
@@ -342,7 +381,7 @@ const BuyerDashboard = (props) => {
               <TableBody>
                 
                 { filtered_food_items.length > 0 ?
-                
+                  
                 filtered_food_items.map((food_item, ind) => (
                   <TableRow key={ind}>
                     <TableCell>{ind+1}</TableCell>
@@ -385,6 +424,45 @@ const BuyerDashboard = (props) => {
               : <>  </>
               
               }
+                {closedShops.map((food_item, ind) => (
+                  <TableRow key={ind}>
+                    <TableCell>{ind + openNum + 1}</TableCell>
+                    <TableCell>{food_item.shop_name}</TableCell>
+                    <TableCell>{food_item.item_name}</TableCell>
+                    <TableCell>{food_item.price}</TableCell> 
+                    <TableCell>{food_item.item_type}</TableCell>  
+                    <TableCell>
+                      <ul class="unstyled">
+                      {
+                      food_item.addons.map((addon) => {
+                        return <li>{addon.name}</li>
+                      })
+                      }
+                      </ul>
+                    </TableCell> 
+                    <TableCell>
+                    <ul class="unstyled">
+                      {
+                      food_item.tags.map((tag) => {
+                        return <li>{tag}</li>
+                      })
+                      }
+                      </ul>
+                    </TableCell>                
+                    <TableCell>{food_item.rating.toFixed(2)}</TableCell>
+                    <TableCell>
+                      <Button variant = "contained" onClick={() => {DelFav(food_item)}}>
+                        Remove Favourite
+                      </Button> 
+                    </TableCell>
+                    <TableCell> 
+                      <Button variant = "contained" onClick={() => {AddToCart(food_item)}} color="error" disabled="true" >
+                        Buy
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                ))
+                }
               </TableBody>
             </Table>
           </Paper>
