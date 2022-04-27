@@ -1,4 +1,4 @@
-# Food-Ordering-WebApp
+# Food Ordering Portal
 
 ## Requirements
 
